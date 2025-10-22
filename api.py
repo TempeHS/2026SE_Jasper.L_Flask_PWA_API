@@ -36,6 +36,7 @@ def get():
 @limiter.limit("1/second", override_defaults=False)
 def post():
     data = request.get_json()
+    response = dbHandler.extension_add(data)
     return data, 201
 
 
