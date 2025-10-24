@@ -7,6 +7,7 @@ import logging
 
 import database_manager as dbHandler
 
+auth_key = "Ck7FmsJH96JsPsq0"
 
 api = Flask(__name__)
 cors = CORS(api)
@@ -35,9 +36,12 @@ def get():
 @api.route("/add_extension", methods=["POST"])
 @limiter.limit("1/second", override_defaults=False)
 def post():
-    data = request.get_json()
-    response = dbHandler.extension_add(data)
-    return data, 201
+    if request.headers.get("Authorisation") == auth_key:
+        data = request.get_json()
+        response = dbHandler.extension_add(data)
+        return response
+    else:
+        return {"error": "Unauthorised"}, 401
 
 
 if __name__ == "__main__":
