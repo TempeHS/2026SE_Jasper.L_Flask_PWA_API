@@ -20,6 +20,15 @@ limiter = Limiter(
 )
 
 
+api_log = logging.getLogger(__name__)
+logging.basicConfig(
+    filename="api_security_log.log",
+    encoding="utf-8",
+    level=logging.DEBUG,
+    format="%(asctime)s %(message)s",
+)
+
+
 @api.route("/", methods=["GET"])
 @limiter.limit("3/second", override_defaults=False)
 def get():
